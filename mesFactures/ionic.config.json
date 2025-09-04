@@ -1,0 +1,7 @@
+{
+  "name": "mesFactures",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
