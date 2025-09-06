@@ -11,7 +11,7 @@ jobs:
     
     defaults:
       run:
-        working-directory: mesfactures
+        working-directory: mesFactures
     
     steps:
     - name: Checkout code
@@ -22,7 +22,7 @@ jobs:
       with:
         node-version: '18'
         cache: 'npm'
-        cache-dependency-path: **/package-lock.json
+        cache-dependency-path: mesFactures/package-lock.json
         
     - name: Setup Java
       uses: actions/setup-java@v4
@@ -55,4 +55,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: app-release
-        path: mesfactures/android/app/build/outputs/apk/release/app-release-unsigned.apk
+        path: mesFactures/android/app/build/outputs/apk/release/app-release-unsigned.apk
