@@ -1,0 +1,64 @@
+name: Build Ionic APK
+
+on:
+  push:
+    branches: [ production ]
+  workflow_dispatch: # Allows manual trigger from Actions tab
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Setup Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+        
+    - name: Navigate to Ionic project
+      run: cd mesfactures
+      
+    - name: Install dependencies
+      run: |
+        cd mesfactures
+        npm ci
+      
+    - name: Install Ionic CLI
+      run: npm install -g @ionic/cli
+      
+    - name: Build Ionic app
+      run: |
+        cd mesfactures
+        ionic build --prod
+      
+    - name: Add Android platform
+      run: |
+        cd mesfactures
+        ionic capacitor add android
+      
+    - name: Sync Capacitor
+      run: |
+        cd mesfactures
+        ionic capacitor sync android
+      
+    - name: Build APK
+      run: |
+        cd mesfactures/android
+        chmod +x gradlew
+        ./gradlew assembleRelease
+        
+    - name: Upload APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: app-release
+        path: mesfactures/android/app/build/outputs/apk/release/app-release-unsigned.apk
