@@ -1,0 +1,162 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/login"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Inscription</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="register-content">
+  <div class="register-container">
+    <!-- Logo -->
+    <div class="logo-container">
+      <img src="assets/images/logos/logo.svg" alt="Logo" class="logo" />
+    </div>
+
+    <!-- Register Form -->
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <ion-card class="register-card">
+        <ion-card-content>
+          <!-- Nom -->
+          <ion-item fill="outline" class="input-item">
+            <ion-label position="stacked">Nom *</ion-label>
+            <ion-input
+              formControlName="nom"
+              placeholder="Entrez votre nom"
+              clearInput="true"
+            ></ion-input>
+          </ion-item>
+          <div class="error-message" *ngIf="registerForm.get('nom')?.invalid && registerForm.get('nom')?.touched">
+            <span *ngIf="registerForm.get('nom')?.errors?.['required']">Le nom est requis</span>
+            <span *ngIf="registerForm.get('nom')?.errors?.['minlength']">Le nom doit contenir au moins 2 caractères</span>
+          </div>
+
+          <!-- Prenoms -->
+          <ion-item fill="outline" class="input-item">
+            <ion-label position="stacked">Prénoms *</ion-label>
+            <ion-input
+              formControlName="prenoms"
+              placeholder="Entrez vos prénoms"
+              clearInput="true"
+            ></ion-input>
+          </ion-item>
+          <div class="error-message" *ngIf="registerForm.get('prenoms')?.invalid && registerForm.get('prenoms')?.touched">
+            <span *ngIf="registerForm.get('prenoms')?.errors?.['required']">Les prénoms sont requis</span>
+          </div>
+
+          <!-- Date de naissance -->
+          <ion-item fill="outline" class="input-item">
+            <ion-label position="stacked">Date de naissance *</ion-label>
+            <ion-datetime
+              formControlName="dateDeNaissance"
+              presentation="date"
+              placeholder="Sélectionnez votre date de naissance"
+            ></ion-datetime>
+          </ion-item>
+          <div class="error-message" *ngIf="registerForm.get('dateDeNaissance')?.invalid && registerForm.get('dateDeNaissance')?.touched">
+            <span *ngIf="registerForm.get('dateDeNaissance')?.errors?.['required']">La date de naissance est requise</span>
+          </div>
+
+          <!-- Lieu de naissance -->
+          <ion-item fill="outline" class="input-item">
+            <ion-label position="stacked">Lieu de naissance *</ion-label>
+            <ion-input
+              formControlName="lieuDeNaissance"
+              placeholder="Entrez votre lieu de naissance"
+              clearInput="true"
+            ></ion-input>
+          </ion-item>
+          <div class="error-message" *ngIf="registerForm.get('lieuDeNaissance')?.invalid && registerForm.get('lieuDeNaissance')?.touched">
+            <span *ngIf="registerForm.get('lieuDeNaissance')?.errors?.['required']">Le lieu de naissance est requis</span>
+          </div>
+
+          <!-- Genre -->
+          <ion-item fill="outline" class="input-item">
+            <ion-label position="stacked">Genre *</ion-label>
+            <ion-select formControlName="genre" placeholder="Sélectionnez votre genre">
+              <ion-select-option *ngFor="let option of genderOptions" [value]="option.value">
+                {{ option.label }}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+          <div class="error-message" *ngIf="registerForm.get('genre')?.invalid && registerForm.get('genre')?.touched">
+            <span *ngIf="registerForm.get('genre')?.errors?.['required']">Le genre est requis</span>
+          </div>
+
+          <!-- Numéro de téléphone -->
+          <ion-item fill="outline" class="input-item">
+            <ion-label position="stacked">Numéro de téléphone *</ion-label>
+            <ion-input
+              formControlName="numeroTelephone"
+              type="tel"
+              placeholder="Entrez votre numéro de téléphone"
+              clearInput="true"
+            ></ion-input>
+          </ion-item>
+          <div class="error-message" *ngIf="registerForm.get('numeroTelephone')?.invalid && registerForm.get('numeroTelephone')?.touched">
+            <span *ngIf="registerForm.get('numeroTelephone')?.errors?.['required']">Le numéro de téléphone est requis</span>
+          </div>
+
+          <!-- Email -->
+          <ion-item fill="outline" class="input-item">
+            <ion-label position="stacked">Email *</ion-label>
+            <ion-input
+              formControlName="email"
+              type="email"
+              placeholder="Entrez votre email"
+              clearInput="true"
+            ></ion-input>
+          </ion-item>
+          <div class="error-message" *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+            <span *ngIf="registerForm.get('email')?.errors?.['required']">L'email est requis</span>
+            <span *ngIf="registerForm.get('email')?.errors?.['email']">Format d'email invalide</span>
+          </div>
+
+          <!-- Mot de passe -->
+          <ion-item fill="outline" class="input-item password-item">
+            <ion-label position="stacked">Mot de passe *</ion-label>
+            <ion-input
+              formControlName="motDePasse"
+              [type]="showPassword ? 'text' : 'password'"
+              placeholder="Entrez votre mot de passe"
+              clearInput="true"
+            ></ion-input>
+            <ion-button
+              fill="clear"
+              slot="end"
+              (click)="togglePasswordVisibility()"
+              class="password-toggle"
+            >
+              <ion-icon [name]="showPassword ? 'eye-off' : 'eye'"></ion-icon>
+            </ion-button>
+          </ion-item>
+          <div class="error-message" *ngIf="registerForm.get('motDePasse')?.invalid && registerForm.get('motDePasse')?.touched">
+            <span *ngIf="registerForm.get('motDePasse')?.errors?.['required']">Le mot de passe est requis</span>
+            <span *ngIf="registerForm.get('motDePasse')?.errors?.['minlength']">Le mot de passe doit contenir au moins 6 caractères</span>
+          </div>
+
+          <!-- Register Button -->
+          <ion-button
+            expand="block"
+            type="submit"
+            [disabled]="!registerForm.valid"
+            class="register-button"
+          >
+            S'inscrire
+          </ion-button>
+
+          <!-- Login Link -->
+          <div class="login-link">
+            <p>
+              Déjà inscrit ?
+              <ion-button fill="clear" size="small" (click)="navigateToLogin()">
+                Se connecter
+              </ion-button>
+            </p>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </form>
+  </div>
+</ion-content>

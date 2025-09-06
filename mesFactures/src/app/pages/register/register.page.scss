@@ -1,0 +1,74 @@
+.register-content {
+  --background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.register-container {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  min-height: 100%;
+}
+
+.logo-container {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.logo {
+  max-width: 120px;
+  height: auto;
+}
+
+.register-card {
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+.input-item {
+  margin-bottom: 16px;
+  --border-radius: 8px;
+  --min-height: 56px;
+}
+
+.input-item ion-input {
+  --padding-start: 16px;
+  --padding-end: 16px;
+}
+
+.input-item.password-item {
+  --padding-end: 0;
+}
+
+.error-message {
+  color: var(--ion-color-danger);
+  font-size: 0.8rem;
+  margin-top: -10px;
+  margin-bottom: 10px;
+  padding-left: 16px;
+}
+
+.register-button {
+  margin-top: 20px;
+  --border-radius: 25px;
+  height: 50px;
+  font-weight: 600;
+}
+
+.login-link {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.password-toggle {
+  --color: var(--ion-color-medium);
+  --padding-start: 0;
+  --padding-end: 0;
+  margin: 0;
+  height: 100%;
+  min-height: auto;
+}
+
+.password-toggle ion-icon {
+  font-size: 20px;
+}
