@@ -3,7 +3,7 @@ name: Build Ionic APK
 on:
   push:
     branches: [ production ]
-  workflow_dispatch: # Allows manual trigger from Actions tab
+  workflow_dispatch: # Allows manual trigger
 
 jobs:
   build:
@@ -20,7 +20,7 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '22'
+        node-version: '22'                       # Node 22 LTS
         cache: 'npm'
         cache-dependency-path: mesFactures/package-lock.json
         
@@ -39,8 +39,13 @@ jobs:
     - name: Build Ionic app
       run: ionic build --prod
       
-    - name: Add Android platform
-      run: ionic capacitor add android
+    - name: Add Android platform if missing
+      run: |
+        if [ ! -d "android" ]; then
+          ionic capacitor add android
+        else
+          echo "Android platform already exists, skipping..."
+        fi
       
     - name: Sync Capacitor
       run: ionic capacitor sync android
