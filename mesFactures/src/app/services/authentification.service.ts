@@ -57,7 +57,26 @@ export class AuthentificationService {
    */
   private async initStorage() {
     await this.storage.create();
+    
+    // For development: Clear any existing tokens to always start fresh
+    // Remove this when you have a real backend
+    await this.clearDemoStorage();
+    
     await this.checkAuthStatus();
+  }
+
+  /**
+   * Clear storage for demo purposes
+   */
+  private async clearDemoStorage() {
+    try {
+      await this.storage.clear();
+      this.authSubject.next(false);
+      this.userSubject.next(null);
+      console.log('Demo storage cleared - starting fresh');
+    } catch (error) {
+      console.error('Error clearing demo storage:', error);
+    }
   }
 
   /**
@@ -67,6 +86,12 @@ export class AuthentificationService {
     try {
       const token = await this.getToken();
       if (token) {
+        // For development, let's not verify token with server since it might not exist
+        // Just check if token exists and assume it's valid for demo
+        console.log('Token found:', token);
+        
+        // Comment out server verification for now to avoid errors
+        /*
         this.verifyToken(token).subscribe({
           next: (response) => {
             if (response.success) {
@@ -80,6 +105,11 @@ export class AuthentificationService {
             this.logout();
           }
         });
+        */
+        
+        // For demo purposes, always logout on app start
+        // Remove this line when you have a real backend
+        await this.logout();
       }
     } catch (error) {
       console.error('Error checking auth status:', error);
@@ -90,6 +120,48 @@ export class AuthentificationService {
    * Login user
    */
   login(email: string, password: string): Observable<LoginResponse> {
+    // Demo mode: simulate login without real backend
+    if (email === 'maria@example.com' && password === 'maria1234') {
+      // Simulate successful demo login
+      const demoToken = 'demo-token-' + Date.now();
+      const demoResponse: LoginResponse = { token: demoToken };
+      
+      return new Observable(observer => {
+        setTimeout(async () => {
+          try {
+            await this.setToken(demoToken);
+            await this.setUser({
+              id: 1,
+              email: email,
+              nom: 'Demo',
+              prenom: 'User'
+            });
+            
+            this.authSubject.next(true);
+            this.userSubject.next({
+              id: 1,
+              email: email,
+              nom: 'Demo',
+              prenom: 'User'
+            });
+            
+            observer.next(demoResponse);
+            observer.complete();
+          } catch (error) {
+            observer.error(new Error('Erreur de stockage'));
+          }
+        }, 1000); // Simulate network delay
+      });
+    } else {
+      // Simulate login failure
+      return new Observable(observer => {
+        setTimeout(() => {
+          observer.error(new Error('Email ou mot de passe incorrect'));
+        }, 1000);
+      });
+    }
+
+    /* Real backend login - uncomment when backend is ready
     const body = { email, password };
     return this.http.post<LoginResponse>(`${this.apiUrl}/login`, body).pipe(
       tap(async (response) => {
@@ -109,6 +181,7 @@ export class AuthentificationService {
       }),
       catchError(this.handleError)
     );
+    */
   }
 
   /**

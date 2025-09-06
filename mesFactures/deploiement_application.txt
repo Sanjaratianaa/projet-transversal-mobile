@@ -1,0 +1,21 @@
+1 - build the production version
+    npm run build
+
+2 - check the capacitor.config.ts
+
+3 - check capacitor configuration
+    ionic capacitor sync
+
+4 - add android platform
+    ionic capacitor add android
+
+this was for android studio
+
+
+now for the easiest way
+1 - npm install -g cordova
+
+2 - ionic integrations enable cordova
+
+3 - add the android platform 
+    ionic cordova platform add android
