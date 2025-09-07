@@ -1,9 +1,9 @@
-name: Build Ionic APK
+name: Build Ionic Debug APK
 
 on:
   push:
     branches: [ production ]
-  workflow_dispatch: # Allows manual trigger
+  workflow_dispatch: # Permet de lancer manuellement depuis l'onglet Actions
 
 jobs:
   build:
@@ -12,7 +12,7 @@ jobs:
     defaults:
       run:
         working-directory: mesFactures
-    
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -20,7 +20,7 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '22'                       # Node 22 LTS
+        node-version: '22'
         cache: 'npm'
         cache-dependency-path: mesFactures/package-lock.json
         
@@ -50,14 +50,14 @@ jobs:
     - name: Sync Capacitor
       run: ionic capacitor sync android
       
-    - name: Build APK
+    - name: Build Debug APK
       run: |
         cd android
         chmod +x gradlew
-        ./gradlew assembleRelease
+        ./gradlew assembleDebug
         
-    - name: Upload APK
+    - name: Upload Debug APK
       uses: actions/upload-artifact@v4
       with:
-        name: app-release
-        path: mesFactures/android/app/build/outputs/apk/release/app-release-unsigned.apk
+        name: app-debug
+        path: mesFactures/android/app/build/outputs/apk/debug/app-debug.apk
